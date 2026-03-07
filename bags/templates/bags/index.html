@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Bags Page</h2>
+  <a href="{{ url_for('bags.new_bag') }}" class="btn btn-dark">+ New Bag</a>
+</div>
+
+<form method="GET" class="mb-4">
+  <div class="input-group" style="max-width:400px">
+    <input type="text" name="q" class="form-control" placeholder="Search bags..." value="{{ search }}">
+    <button class="btn btn-outline-dark" type="submit">Search</button>
+    {% if search %}
+      <a href="{{ url_for('bags.index') }}" class="btn btn-outline-secondary">Clear</a>
+    {% endif %}
+  </div>
+</form>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for bag in bags %}
+  <div class="col">
+    <div class="card h-100 shadow-sm">
+      <a href="{{ url_for('bags.bag_detail', bag_id=bag.id) }}" style="text-decoration:none;color:inherit">
+        {% if bag.image_url %}
+          <img src="{{ bag.image_url }}" class="card-img-top" style="height:200px;object-fit:cover">
+        {% else %}
+          <div class="bg-light d-flex align-items-center justify-content-center" style="height:200px;font-size:48px">👜</div>
+        {% endif %}
+        <div class="card-body">
+          {% if bag.brand %}
+            <small class="text-muted text-uppercase">{{ bag.brand }}</small>
+          {% endif %}
+          <h5 class="card-title">{{ bag.name }}</h5>
+          <p class="card-text text-truncate text-muted">{{ bag.description }}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <strong class="text-warning">฿{{ "%.0f"|format(bag.price) }}</strong>
+            {% if bag.stock > 0 %}
+              <span class="text-success small">In stock: {{ bag.stock }} pcs</span>
+            {% else %}
+              <span class="text-danger small fw-bold">Out of stock</span>
+            {% endif %}
+          </div>
+        </div>
+      </a>
+      <div class="card-footer d-flex gap-2">
+        <a href="{{ url_for('bags.edit_bag', bag_id=bag.id) }}" class="btn btn-sm btn-outline-dark w-50">Edit</a>
+        <a href="{{ url_for('bags.delete_bag', bag_id=bag.id) }}" class="btn btn-sm btn-outline-danger w-50"
+           onclick="return confirm('ยืนยันการลบ?')">Delete</a>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="col-12 text-center py-5 text-muted">
+    <div style="font-size:48px"></div>
+    {% if search %}No bags found{% else %}No bags available. Click "+ New Bag" to add one.{% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
