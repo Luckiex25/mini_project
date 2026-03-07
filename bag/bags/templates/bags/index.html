@@ -77,9 +77,6 @@
   <div class="col-12 text-center py-5">
     <div style="font-size:56px;margin-bottom:12px">👜</div>
     <p class="text-muted">{% if search %}No bags found{% else %}No bags yet. Add your first bag!{% endif %}</p>
-    {% if not search %}
-      <a href="{{ url_for('bags.new_bag') }}" class="new-btn mt-2 d-inline-block">+ New Bag</a>
-    {% endif %}
   </div>
   {% endfor %}
 </div>
