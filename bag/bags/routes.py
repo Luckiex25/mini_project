@@ -33,7 +33,7 @@ def new_bag():
         )
         db.session.add(bag)
         db.session.commit()
-        flash('เพิ่มกระเป๋าสำเร็จ!', 'success')
+        flash('Bag added successful!', 'success')
         return redirect(url_for('bags.index'))
     return render_template('bags/new_bag.html')
 
@@ -49,7 +49,7 @@ def edit_bag(bag_id):
         bag.stock       = int(request.form.get('stock', 0))
         bag.image_url   = request.form.get('image_url', '')
         db.session.commit()
-        flash('แก้ไขสำเร็จ!', 'success')
+        flash('Bag updated successful!', 'success')
         return redirect(url_for('bags.index'))
     return render_template('bags/edit_bag.html', bag=bag)
 
@@ -59,7 +59,7 @@ def delete_bag(bag_id):
     bag = Bag.query.get_or_404(bag_id)
     db.session.delete(bag)
     db.session.commit()
-    flash('ลบสำเร็จ', 'success')
+    flash('Bag deleted successful!', 'success')
     return redirect(url_for('bags.index'))
 
 @bags_bp.route('/bags/<int:bag_id>')
