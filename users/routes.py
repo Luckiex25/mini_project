@@ -44,9 +44,16 @@ def logout():
     logout_user()
     return redirect(url_for('users.login'))
 
-@users_bp.route('/profile')
+@users_bp.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
+    if request.method == 'POST':
+        current_user.firstname = request.form.get('firstname', '')
+        current_user.lastname  = request.form.get('lastname', '')
+        current_user.email     = request.form.get('email', '')
+        db.session.commit()
+        flash('Profile updated successful!', 'success')
+        return redirect(url_for('users.profile'))
     return render_template('users/profile.html', user=current_user)
 
 @users_bp.route('/change_password', methods=['GET', 'POST'])
@@ -59,5 +66,5 @@ def change_password():
         else:
             current_user.password = hash_pw(request.form['new_password'])
             db.session.commit()
-            flash('Password changed successfully', 'success')
+            flash('Password changed successful!', 'success')
     return render_template('users/change_password.html')
